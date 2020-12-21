@@ -2,6 +2,7 @@
 using IIG.CoSFE.DatabaseUtils;
 using IIG.PasswordHashingUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace IntegrationTesting
 {
@@ -43,13 +44,29 @@ namespace IntegrationTesting
         }
 
         [TestMethod]
+        public void Test_AddFlag_65_Ecxeption()
+        {
+            Assert.IsFalse(flagpoleDatabaseUtils.AddFlag("ghj", binaryFlag_65.GetFlag()));
+            Assert.IsFalse(flagpoleDatabaseUtils.AddFlag("t", binaryFlag_65_f.GetFlag()));
+        }
+
+        [TestMethod]
         public void Test_GetFlagFromDB()
         {
             string flagView;
             bool? flagValue;
-            flagpoleDatabaseUtils.GetFlag(3, out flagView, out flagValue); // expect 1 t
-            Assert.AreEqual(binaryFlag_10.GetFlag(), flagValue);
+            flagpoleDatabaseUtils.GetFlag(3, out flagView, out flagValue); 
+            Assert.AreEqual(true, flagValue);
             Assert.AreEqual("tTt", flagView);
+        }
+
+        [TestMethod]
+        public void Test_GetFlagFromDB_Exception()
+        {
+            string flagView;
+            bool? flagValue; 
+            Assert.IsFalse(flagpoleDatabaseUtils.GetFlag(1000, out flagView, out flagValue));
+            Assert.IsFalse(flagpoleDatabaseUtils.GetFlag(-1000, out flagView, out flagValue));
         }
 
         [TestMethod]
